@@ -17,6 +17,7 @@ namespace MicroservicioStock.Controllers
         private readonly IDeleteStockHandler _deleteStockHandler;
         private readonly IGetAllStockHandler _getAllStockHandler;
         private readonly IGetByIdStockHandler _getByIdStockHandler;
+        private readonly IGetDrinkStocksByDrinkIdsHandler _getDrinkStocksByDrinkIdsHandler;
         private readonly IConsumeStockForOrderHandler _consumeStockForOrderHandler;
         private readonly IReleaseStockForOrderHandler _releaseStockForOrderHandler;
 
@@ -26,6 +27,7 @@ namespace MicroservicioStock.Controllers
             IDeleteStockHandler deleteStockHandler,
             IGetAllStockHandler getAllStockHandler,
             IGetByIdStockHandler getByIdStockHandler,
+            IGetDrinkStocksByDrinkIdsHandler getDrinkStocksByDrinkIdsHandler,
             IConsumeStockForOrderHandler consumeStockForOrderHandler,
             IReleaseStockForOrderHandler releaseStockForOrderHandler)
         {
@@ -34,6 +36,7 @@ namespace MicroservicioStock.Controllers
             _deleteStockHandler = deleteStockHandler;
             _getAllStockHandler = getAllStockHandler;
             _getByIdStockHandler = getByIdStockHandler;
+            _getDrinkStocksByDrinkIdsHandler = getDrinkStocksByDrinkIdsHandler;
             _consumeStockForOrderHandler = consumeStockForOrderHandler;
             _releaseStockForOrderHandler = releaseStockForOrderHandler;
         }
@@ -47,6 +50,20 @@ namespace MicroservicioStock.Controllers
         {
             var stocks = await _getAllStockHandler.Handle(
                 new GetAllStockQuery(pageNumber, pageSize));
+
+            return Ok(stocks);
+        }
+
+        [HttpGet("drinks")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(List<StockResponseDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetByDrinkIds([FromQuery] Guid[] drinkIds)
+        {
+            var stocks = await _getDrinkStocksByDrinkIdsHandler.Handle(
+                new GetDrinkStocksByDrinkIdsQuery(drinkIds));
 
             return Ok(stocks);
         }

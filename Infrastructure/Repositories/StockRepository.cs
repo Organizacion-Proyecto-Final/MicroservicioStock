@@ -52,6 +52,14 @@ namespace Infrastructure.Repositories
             return (items, totalCount, pageNumber);
         }
 
+        public async Task<List<Stock>> GetByDrinkIdsAsync(IReadOnlyCollection<Guid> drinkIds)
+        {
+            return await _context.Stock
+                .AsNoTracking()
+                .Where(stock => stock.Id_Drink.HasValue && drinkIds.Contains(stock.Id_Drink.Value))
+                .ToListAsync();
+        }
+
         public async Task<bool> HasAssignedDishesAsync(Guid stockId)
         {
             return await _context.IngredientDish

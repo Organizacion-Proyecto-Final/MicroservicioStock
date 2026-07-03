@@ -12,6 +12,7 @@ namespace Application.Interfaces.Repositories
         Task<Stock?> GetByIdAsync(Guid id);
         Task<IEnumerable<Stock>> GetAllAsync();
         Task<(List<Stock> Items, int TotalCount, int PageNumber)> GetPageAsync(int pageNumber, int pageSize);
+        Task<List<Stock>> GetByDrinkIdsAsync(IReadOnlyCollection<Guid> drinkIds);
         Task<bool> HasAssignedDishesAsync(Guid stockId);
         Task AddAsync(Stock stock);
         Task UpdateAsync(Stock stock, byte[] rowVersion);

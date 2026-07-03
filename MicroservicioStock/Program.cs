@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUpdateStockHandler, UpdateStockHandler>();
 builder.Services.AddScoped<IDeleteStockHandler, DeleteStockHandler>();
 builder.Services.AddScoped<IGetAllStockHandler, GetAllStockHandler>();
 builder.Services.AddScoped<IGetByIdStockHandler, GetByIdStockHandler>();
+builder.Services.AddScoped<IGetDrinkStocksByDrinkIdsHandler, GetDrinkStocksByDrinkIdsHandler>();
 builder.Services.AddScoped<IConsumeStockForOrderHandler, ConsumeStockForOrderHandler>();
 builder.Services.AddScoped<IReleaseStockForOrderHandler, ReleaseStockForOrderHandler>();
 
